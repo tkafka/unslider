@@ -168,7 +168,8 @@
 		//  Find our dots even if they're not part of the normal
 		//  Unslider DOM object
 		this.findDots = function() {
-			return this.opts.dots === true ? this.el : this.opts.dots;
+			// was: return this.opts.dots === true ? this.el : this.opts.dots;
+			return this.opts.dots || this.el;
 		};
 		
 		//  Listen to keyboard navigation
@@ -280,6 +281,8 @@
 		
 		//  Let's go, yo.
 		this.start = function() {
+			self.stop();
+
 			this.queue = setInterval(function() {
 				return self.move(self.index + 1);
 			}, this.opts.interval);
@@ -287,7 +290,8 @@
 		
 		//  Stop the slider for whatever reason
 		this.stop = function() {
-			return this.queue = clearInterval(this.queue);
+			this.queue && clearInterval(this.queue);
+			this.queue = undefined;
 		};
 		
 		//  Wrap jQuery's .animate() so it prefers velocity.js
